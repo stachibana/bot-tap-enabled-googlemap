@@ -94,7 +94,7 @@ def handle_location(event):
 
     zoomlevel = 18
     imagesize = 1040
-
+    # 縦横1040ピクセルの画像を取得
     map_image_url = 'https://maps.googleapis.com/maps/api/staticmap?center={},{}&zoom={}&size=520x520&scale=2&maptype=roadmap&key={}'.format(lat, lon, zoomlevel, 'AIzaSyAtbs1MG9dES1JhT1gRDmx-QQtyhYpr2_g');
     map_image_url += '&markers=color:{}|label:{}|{},{}'.format('blue', '', lat, lon)
 
@@ -125,6 +125,7 @@ def handle_location(event):
         x = marker_lat_pixel
         y = marker_lon_pixel
 
+        # 範囲外のを除外
         if(pin_width / 2 < x < imagesize - pin_width / 2 and pin_height < y < imagesize - pin_width):
 
             map_image_url += '&markers=color:{}|label:{}|{},{}'.format(marker_color, label, pin[0], pin[1])
@@ -141,6 +142,7 @@ def handle_location(event):
             if len(actions) > 10:
                 break
 
+    # Imagemap Message
     message = ImagemapSendMessage(
         base_url = 'https://{}/imagemap/{}'.format(request.host, urllib.parse.quote_plus(map_image_url)),
         alt_text = '地図',
